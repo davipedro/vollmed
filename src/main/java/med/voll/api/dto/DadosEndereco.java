@@ -1,4 +1,4 @@
-package med.voll.dto;
+package med.voll.api.dto;
 
 public record DadosEndereco(String logradouro, 
                             String numero, 

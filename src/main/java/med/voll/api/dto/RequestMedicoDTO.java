@@ -1,6 +1,6 @@
-package med.voll.dto;
+package med.voll.api.dto;
 
-import med.voll.model.Especialidade;
+import med.voll.api.model.Especialidade;
 
 public record RequestMedicoDTO(String nome,
                                 String email, 
