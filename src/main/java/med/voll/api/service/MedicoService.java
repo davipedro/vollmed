@@ -31,7 +31,7 @@ public class MedicoService {
     }
 
     public Page<ResponseMedicoDTO> buscarMedicos(Pageable paginacao) {
-        return medicoRepository.findAll(paginacao)
+        return medicoRepository.findAllByAtivoTrue(paginacao)
             .map(medico -> new ResponseMedicoDTO(
                 medico.getNome(), 
                 medico.getEmail(), 
@@ -54,6 +54,12 @@ public class MedicoService {
 
             medico.setEndereco(endereco);
         }
+    }
+
+    public void remocaoLogica(Long id) {
+        var medico = medicoRepository.findById(id).orElseThrow();
+        
+        medico.setAtivo(false);
     }
 
     
