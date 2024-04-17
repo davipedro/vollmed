@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
-
 @RestController
 @RequestMapping("/medicos")
 public class MedicoController {
@@ -49,6 +47,14 @@ public class MedicoController {
     public ResponseEntity<Page<ResponseMedicoDTO>> getMedicos(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
         return ResponseEntity.ok().body(medicoService.buscarMedicos(paginacao));
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ResponseMedicoDTO> getMedicosPorId(@PathVariable Long id) {
+        var medico = medicoService.buscarMedicoPorId(id);
+        
+        return ResponseEntity.ok().body(medico);
+    }
+    
 
     @PutMapping("/medico/{id}")
     @Transactional

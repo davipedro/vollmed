@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import med.voll.api.dto.medico.RegistroMedicoDTO;
 import med.voll.api.dto.medico.ResponseMedicoDTO;
 import med.voll.api.dto.medico.UpdateMedicoDTO;
+import med.voll.api.infra.exceptions.IdInexistenteException;
 import med.voll.api.model.Endereco;
 import med.voll.api.model.Medico;
 import med.voll.api.repository.MedicoRepository;
@@ -57,9 +58,21 @@ public class MedicoService {
     }
 
     public void remocaoLogica(Long id) {
-        var medico = medicoRepository.findById(id).orElseThrow();
+        var medico = medicoRepository.findById(id)
+                        .orElseThrow(() -> new IdInexistenteException());
         
         medico.setAtivo(false);
+    }
+
+    public ResponseMedicoDTO buscarMedicoPorId(Long id) {
+        var medico = medicoRepository.findById(id)
+                        .orElseThrow(() -> new IdInexistenteException());
+
+        return new ResponseMedicoDTO(
+            medico.getNome(),
+            medico.getEmail(), 
+            medico.getCrm(),
+            medico.getEspecialidade());
     }
 
     
