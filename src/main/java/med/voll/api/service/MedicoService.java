@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import med.voll.api.dto.medico.RegistroMedicoDTO;
 import med.voll.api.dto.medico.ResponseMedicoDTO;
 import med.voll.api.dto.medico.UpdateMedicoDTO;
-import med.voll.api.infra.exceptions.IdInexistenteException;
+import med.voll.api.infra.exception.IdInexistenteException;
 import med.voll.api.model.Endereco;
 import med.voll.api.model.Medico;
 import med.voll.api.repository.MedicoRepository;
