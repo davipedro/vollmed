@@ -7,6 +7,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.RestController;
 
 import med.voll.api.dto.usuario.DadosAutenticacao;
+import med.voll.api.infra.security.DadosTokenJWT;
+import med.voll.api.model.Usuario;
+import med.voll.api.service.TokenService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,19 +17,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping
 public class AutenticacaoController {
 
     @Autowired
     AuthenticationManager manager;
+
+    private TokenService tokenService;
     
-    @PostMapping
+    public AutenticacaoController(TokenService tokenService) {
+        this.tokenService = tokenService;
+    }
+
+    @PostMapping("/login")
     public ResponseEntity<Object> efetuarLogin(@RequestBody DadosAutenticacao dados) {
 
-        var token = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
+        var authToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
 
-        var authentication = manager.authenticate(token);
+        var authentication = manager.authenticate(authToken);
 
-        return ResponseEntity.ok().build();
+        var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
+
+        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
     }
 }
