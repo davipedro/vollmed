@@ -31,7 +31,7 @@ public class SecurityFilter extends OncePerRequestFilter{
 
         //if para não bloquear requisições que não possem token no header (como no login)
         if (tokenJWT != null){
-            String login = tokenService.getSubject(tokenJWT);
+            String login = tokenService.validarToken(tokenJWT);
             UserDetails user = repository.findByLogin(login);
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());

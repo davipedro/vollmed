@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RestController
-@RequestMapping
+@RequestMapping("/login")
 public class AutenticacaoController {
 
     @Autowired
@@ -29,7 +29,7 @@ public class AutenticacaoController {
         this.tokenService = tokenService;
     }
 
-    @PostMapping("/login")
+    @PostMapping
     public ResponseEntity<Object> efetuarLogin(@RequestBody DadosAutenticacao dados) {
 
         var authToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
