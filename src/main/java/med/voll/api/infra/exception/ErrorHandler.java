@@ -2,6 +2,7 @@ package med.voll.api.infra.exception;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,64 +23,69 @@ import med.voll.api.infra.exception.paciente.PacienteNaoEncontradoException;
 @RestControllerAdvice
 public class ErrorHandler {
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Object> dadoJsonInvalido(HttpMessageNotReadableException ex){
+        return ResponseEntity.badRequest().body("Dados inválidos ou insuficientes");
+    }
+
     @ExceptionHandler(PacienteDiaException.class)
-    public ResponseEntity<Object> pacienteConsultasDia(){
-        return ResponseEntity.badRequest().body("Paciente já possui uma consulta agendada nesse dia");
+    public ResponseEntity<Object> pacienteConsultasDia(PacienteDiaException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(MedicoInativoException.class)
-    public ResponseEntity<Object> medicoInativo(){
-        return ResponseEntity.badRequest().body("Consulta não pode ser agendada com médico excluído");
+    public ResponseEntity<Object> medicoInativo(MedicoInativoException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(HorarioOcupadoException.class)
-    public ResponseEntity<Object> horarioOcupado(){
-        return ResponseEntity.badRequest().body("O horario já está ocupado por outro paciente!");
+    public ResponseEntity<Object> horarioOcupado(HorarioOcupadoException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(AntecedenciaException.class)
-    public ResponseEntity<Object> antecedenciaInvalida(){
-        return ResponseEntity.badRequest().body("A consulta de ser agendada com antecedencia minima de 30 minutos!");
+    public ResponseEntity<Object> antecedenciaInvalida(AntecedenciaException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(ConsultaHorarioException.class)
-    public ResponseEntity<Object> horarioInvalido(){
-        return ResponseEntity.badRequest().body("O horário fornecido está fora do horário de atendimento!");
+    public ResponseEntity<Object> horarioInvalido(ConsultaHorarioException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(EspecialidadeErradaException.class)
-    public ResponseEntity<Object> especilidadeErrada(){
-        return ResponseEntity.badRequest().body("O médico não condiz com a especialidade fornecida!");
+    public ResponseEntity<Object> especilidadeErrada(EspecialidadeErradaException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(EspecialidadeNaoEncontrada.class)
-    public ResponseEntity<Object> especilidadeInexistente(){
-        return ResponseEntity.badRequest().body("Especialidade não encontrada!");
+    public ResponseEntity<Object> especilidadeInexistente(EspecialidadeNaoEncontrada ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(MedicosIndisponiveisException.class)
-    public ResponseEntity<Object> medicosIndisponiveis(){
-        return ResponseEntity.status(HttpStatusCode.valueOf(404)).body("Não foi possível criar a consulta!");
+    public ResponseEntity<Object> medicosIndisponiveis(MedicosIndisponiveisException ex){
+        return ResponseEntity.status(HttpStatusCode.valueOf(404)).body(ex.getMessage());
     }
 
     @ExceptionHandler(ConsultaException.class)
-    public ResponseEntity<Object> consultaInvalida(){
-        return ResponseEntity.badRequest().body("Não foi possível criar a consulta!");
+    public ResponseEntity<Object> consultaInvalida(ConsultaException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
     
     @ExceptionHandler(IdInexistenteException.class)
-    public ResponseEntity<Object> idInexistente(){
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Object> idInexistente(IdInexistenteException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(PacienteNaoEncontradoException.class)
-    public ResponseEntity<Object> pacienteNaoEncontrado(){
-        return ResponseEntity.badRequest().body("Paciente não encontrado!");
+    public ResponseEntity<Object> pacienteNaoEncontrado(PacienteNaoEncontradoException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(MedicoNaoEncontradoException.class)
-    public ResponseEntity<Object> MedicoNaoEncontrado(){
-        return ResponseEntity.badRequest().body("Médico não encontrado!");
+    public ResponseEntity<Object> MedicoNaoEncontrado(MedicoNaoEncontradoException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
