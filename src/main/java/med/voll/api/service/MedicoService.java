@@ -80,7 +80,7 @@ public class MedicoService {
 
         var especialidadeValida = Especialidade.ehEspecialidade(dados.especialidade());
 
-        if (!especialidadeValida) throw new EspecialidadeNaoEncontrada();
+        if (!especialidadeValida) throw new EspecialidadeNaoEncontrada("Especialidade não encontrada!");
 
         List<Medico> medicosDisponiveis = medicoRepository.buscarDisponiveis(dados.especialidade(), dados.data());
 
