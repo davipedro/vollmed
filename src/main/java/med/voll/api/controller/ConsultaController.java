@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.voll.api.dto.consulta.DadosCancelamentoConsulta;
-import med.voll.api.dto.consulta.RequestAgendamentoDTO;
+import med.voll.api.dto.consulta.RequestAgendamento;
 import med.voll.api.service.ConsultaService;
 
 import org.springframework.http.ResponseEntity;
@@ -29,14 +29,14 @@ public class ConsultaController {
     
 
     @PostMapping("/agendar")
-    public ResponseEntity<Object> agendar(@RequestParam(defaultValue = "true") Boolean aleatorio, @RequestBody RequestAgendamentoDTO dados) {
+    public ResponseEntity<Object> agendar(@RequestParam(defaultValue = "true") Boolean aleatorio, @RequestBody RequestAgendamento dados) {
         var consulta = consultaService.agendar(aleatorio, dados);
         
         return ResponseEntity.ok().body(consulta);
     }
 
-    @DeleteMapping
     @Transactional
+    @DeleteMapping("/consulta")
     public ResponseEntity<Object> cancelar(@RequestBody @Valid DadosCancelamentoConsulta dados) {
         consultaService.cancelar(dados);
         return ResponseEntity.noContent().build();
