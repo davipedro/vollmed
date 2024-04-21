@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import med.voll.api.model.Especialidade;
 
-public record RequestAgendamentoDTO(@JsonAlias("id_medico") 
+public record RequestAgendamento(@JsonAlias("id_medico") 
                                     Long idMedico,
                                     @NotNull
                                     Especialidade especialidade,
