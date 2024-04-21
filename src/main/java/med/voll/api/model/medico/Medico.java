@@ -1,4 +1,4 @@
-package med.voll.api.model;
+package med.voll.api.model.medico;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -14,6 +14,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import med.voll.api.dto.medico.RegistroMedicoDTO;
+import med.voll.api.model.Especialidade;
+import med.voll.api.model.endereco.Endereco;
 
 @Entity
 @Table(name = "medicos")

@@ -1,16 +1,21 @@
 package med.voll.api.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import med.voll.api.dto.medico.RegistroMedicoDTO;
-import med.voll.api.dto.medico.ResponseMedicoDTO;
+import med.voll.api.dto.medico.RequestMedicosPorData;
+import med.voll.api.dto.medico.ResponseDadosMedicoDTO;
 import med.voll.api.dto.medico.UpdateMedicoDTO;
 import med.voll.api.infra.exception.IdInexistenteException;
-import med.voll.api.model.Endereco;
-import med.voll.api.model.Medico;
+import med.voll.api.infra.exception.medico.EspecialidadeNaoEncontrada;
+import med.voll.api.model.Especialidade;
+import med.voll.api.model.endereco.Endereco;
+import med.voll.api.model.medico.Medico;
 import med.voll.api.repository.MedicoRepository;
 
 @Service
@@ -18,10 +23,6 @@ public class MedicoService {
 
     @Autowired
     private MedicoRepository medicoRepository;
-
-    public void teste(){
-        medicoRepository.findAll();
-    }
 
     public Long cadastrarMedico(RegistroMedicoDTO dados) {
         Medico medico = new Medico(dados);
@@ -31,9 +32,9 @@ public class MedicoService {
         return medico.getId();
     }
 
-    public Page<ResponseMedicoDTO> buscarMedicos(Pageable paginacao) {
+    public Page<ResponseDadosMedicoDTO> buscarMedicos(Pageable paginacao) {
         return medicoRepository.findAllByAtivoTrue(paginacao)
-            .map(medico -> new ResponseMedicoDTO(
+            .map(medico -> new ResponseDadosMedicoDTO(
                 medico.getNome(), 
                 medico.getEmail(), 
                 medico.getCrm(), 
@@ -64,17 +65,27 @@ public class MedicoService {
         medico.setAtivo(false);
     }
 
-    public ResponseMedicoDTO buscarMedicoPorId(Long id) {
+    public ResponseDadosMedicoDTO buscarMedicoPorId(Long id) {
         var medico = medicoRepository.findById(id)
                         .orElseThrow(() -> new IdInexistenteException());
 
-        return new ResponseMedicoDTO(
+        return new ResponseDadosMedicoDTO(
             medico.getNome(),
             medico.getEmail(), 
             medico.getCrm(),
             medico.getEspecialidade());
     }
 
-    
-    
+    public List<String> buscarDisponiveis(RequestMedicosPorData dados) {
+
+        var especialidadeValida = Especialidade.ehEspecialidade(dados.especialidade());
+
+        if (!especialidadeValida) throw new EspecialidadeNaoEncontrada();
+
+        List<Medico> medicosDisponiveis = medicoRepository.buscarDisponiveis(dados.especialidade(), dados.data());
+
+        return medicosDisponiveis.stream()
+                .map(Medico::getNome)
+                .toList();
+    }
 }

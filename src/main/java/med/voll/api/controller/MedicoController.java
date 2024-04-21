@@ -1,6 +1,7 @@
 package med.voll.api.controller;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.voll.api.dto.medico.RegistroMedicoDTO;
-import med.voll.api.dto.medico.ResponseMedicoDTO;
+import med.voll.api.dto.medico.RequestMedicosPorData;
+import med.voll.api.dto.medico.ResponseDadosMedicoDTO;
 import med.voll.api.dto.medico.UpdateMedicoDTO;
 import med.voll.api.service.MedicoService;
 
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController
 @RequestMapping("/medicos")
@@ -44,12 +47,20 @@ public class MedicoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ResponseMedicoDTO>> getMedicos(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
+    public ResponseEntity<Page<ResponseDadosMedicoDTO>> getMedicos(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
         return ResponseEntity.ok().body(medicoService.buscarMedicos(paginacao));
     }
 
+    @GetMapping("/data")
+    public ResponseEntity<List<String>> getMedicosPorData(@RequestBody RequestMedicosPorData dados) {
+        List<String> disponibilidadeMedicos = medicoService.buscarDisponiveis(dados);
+
+        return ResponseEntity.ok().body(disponibilidadeMedicos);
+    }
+    
+
     @GetMapping("{id}")
-    public ResponseEntity<ResponseMedicoDTO> getMedicosPorId(@PathVariable Long id) {
+    public ResponseEntity<ResponseDadosMedicoDTO> getMedicosPorId(@PathVariable Long id) {
         var medico = medicoService.buscarMedicoPorId(id);
         
         return ResponseEntity.ok().body(medico);
@@ -65,7 +76,7 @@ public class MedicoController {
 
     @DeleteMapping("/medico/{id}")
     @Transactional
-    public ResponseEntity remocaoLogica(@PathVariable Long id){
+    public ResponseEntity<Object> remocaoLogica(@PathVariable Long id){
         medicoService.remocaoLogica(id);
         return ResponseEntity.noContent().build();
     }
