@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import med.voll.api.dto.usuario.DadosAutenticacao;
 import med.voll.api.infra.security.DadosTokenJWT;
-import med.voll.api.model.Usuario;
+import med.voll.api.model.usuario.Usuario;
 import med.voll.api.service.TokenService;
 
 import org.springframework.web.bind.annotation.PostMapping;
