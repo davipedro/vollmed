@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import med.voll.api.dto.consulta.MotivoCancelamento;
 import med.voll.api.model.medico.Medico;
@@ -26,6 +27,7 @@ import med.voll.api.model.paciente.Paciente;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Consulta {
     
@@ -46,7 +48,7 @@ public class Consulta {
     @Column(name = "motivo_cancelamento")
     @Enumerated(EnumType.STRING)
     private MotivoCancelamento motivoCancelamento;
-
+    
     public void cancelar(MotivoCancelamento motivo) {
         this.motivoCancelamento = motivo;
     }
