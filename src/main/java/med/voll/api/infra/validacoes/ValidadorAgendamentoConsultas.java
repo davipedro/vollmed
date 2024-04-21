@@ -1,8 +1,8 @@
 package med.voll.api.infra.validacoes;
 
-import med.voll.api.dto.consulta.RequestAgendamentoDTO;
+import med.voll.api.dto.consulta.RequestAgendamento;
 
 public interface ValidadorAgendamentoConsultas {
     
-    void validar(RequestAgendamentoDTO dados);
+    void validar(RequestAgendamento dados);
 }

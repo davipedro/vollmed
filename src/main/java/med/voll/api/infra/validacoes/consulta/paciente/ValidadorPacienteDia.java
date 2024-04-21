@@ -3,7 +3,7 @@ package med.voll.api.infra.validacoes.consulta.paciente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import med.voll.api.dto.consulta.RequestAgendamentoDTO;
+import med.voll.api.dto.consulta.RequestAgendamento;
 import med.voll.api.infra.exception.paciente.PacienteDiaException;
 import med.voll.api.infra.validacoes.ValidadorAgendamentoConsultas;
 import med.voll.api.repository.ConsultaRepository;
@@ -14,7 +14,7 @@ public class ValidadorPacienteDia implements ValidadorAgendamentoConsultas {
     @Autowired
     private ConsultaRepository repository;
 
-    public void validar(RequestAgendamentoDTO dados) {
+    public void validar(RequestAgendamento dados) {
         
         var primeiroHorario = dados.data().withHour(7);
         
@@ -24,7 +24,7 @@ public class ValidadorPacienteDia implements ValidadorAgendamentoConsultas {
         ultimoHorario);
         
         if (pacientePossuiOutraConsultaNoDia) {
-            throw new PacienteDiaException();
+            throw new PacienteDiaException("Paciente já possui uma consulta agendada nesse dia");
         }
     }
 

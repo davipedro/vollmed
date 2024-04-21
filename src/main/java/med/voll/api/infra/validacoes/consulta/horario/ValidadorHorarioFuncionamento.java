@@ -4,7 +4,7 @@ import java.time.DayOfWeek;
 
 import org.springframework.stereotype.Component;
 
-import med.voll.api.dto.consulta.RequestAgendamentoDTO;
+import med.voll.api.dto.consulta.RequestAgendamento;
 import med.voll.api.infra.exception.consulta.ConsultaHorarioException;
 import med.voll.api.infra.validacoes.ValidadorAgendamentoConsultas;
 
@@ -12,7 +12,7 @@ import med.voll.api.infra.validacoes.ValidadorAgendamentoConsultas;
 public class ValidadorHorarioFuncionamento implements ValidadorAgendamentoConsultas{
     
     @Override
-    public void validar(RequestAgendamentoDTO dados) {
+    public void validar(RequestAgendamento dados) {
         var dataConsulta = dados.data();
 
         var domingo = dataConsulta.getDayOfWeek().equals(DayOfWeek.SUNDAY);
@@ -22,7 +22,7 @@ public class ValidadorHorarioFuncionamento implements ValidadorAgendamentoConsul
         var depoisDoEncerramentoDaClinica = dataConsulta.getHour() > 18;
         
         if (domingo || antesDaAberturaDaClinica || depoisDoEncerramentoDaClinica) {
-            throw new ConsultaHorarioException();
+            throw new ConsultaHorarioException("O horário fornecido está fora do horário de atendimento");
         }
 
     }   
