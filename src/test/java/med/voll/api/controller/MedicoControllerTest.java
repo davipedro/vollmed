@@ -47,7 +47,7 @@ class MedicoControllerTest {
     @WithMockUser
     void cadastrar_cenario1() throws Exception {
         var response = mvc
-    .perform(post("/medicos"))
+    .perform(post("/medicos/medico"))
                 .andReturn().getResponse();
 
     assertThat(response.getStatus())
