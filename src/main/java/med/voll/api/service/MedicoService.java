@@ -24,12 +24,17 @@ public class MedicoService {
     @Autowired
     private MedicoRepository medicoRepository;
 
-    public Long cadastrarMedico(RegistroMedicoDTO dados) {
+    public ResponseDadosMedicoDTO cadastrarMedico(RegistroMedicoDTO dados) {
         Medico medico = new Medico(dados);
 
         medicoRepository.save(medico);
 
-        return medico.getId();
+        return new ResponseDadosMedicoDTO(
+            medico.getNome(),
+            medico.getEmail(),
+            medico.getCrm(),
+            medico.getEspecialidade()
+        );
     }
 
     public Page<ResponseDadosMedicoDTO> buscarMedicos(Pageable paginacao) {
