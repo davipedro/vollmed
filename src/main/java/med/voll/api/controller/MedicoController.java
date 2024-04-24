@@ -32,8 +32,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/medicos")
 @SecurityRequirement(name = "bearer-key")
 public class MedicoController {
-
-    private static final String URI_BASE = "localhost:8080/medicos";
     
     @Autowired
     private MedicoService medicoService;
